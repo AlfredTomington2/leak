@@ -22,6 +22,10 @@ def count_lines_in_leak_files():
     
     return total_lines
 
+def count_leak_files():
+    """Funkcja liczy liczbę plików zaczynających się na 'leak'."""
+    return len([f for f in os.listdir(LEAK_DIRECTORY) if f.startswith("leak")])
+
 @app.route('/api/leak/', methods=['GET'])
 def leak_data():
     """Endpoint do wyszukiwania wszystkich wpisów pasujących do podanego nicku."""
@@ -58,6 +62,12 @@ def get_line_count():
     """Endpoint do zwrócenia łącznej liczby linii w plikach zaczynających się na 'leak'."""
     total_lines = count_lines_in_leak_files()
     return jsonify({'total_lines': total_lines, 'status': 'success'}), 200
+
+@app.route('/api/leak/filecount', methods=['GET'])
+def get_file_count():
+    """Endpoint do zwrócenia liczby plików zaczynających się na 'leak'."""
+    total_files = count_leak_files()
+    return jsonify({'total_files': total_files, 'status': 'success'}), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
